@@ -2,29 +2,29 @@ package singly
 
 import "fmt"
 
-type Node struct {
+type SingleNode struct {
 	Data interface{}
-	Next *Node
+	Next *SingleNode
 }
 
 type SinglyLinkedList struct {
-	Head *Node
-	Tail *Node
+	Head *SingleNode
+	Tail *SingleNode
 	size int64
 }
 
 func (list *SinglyLinkedList) InsertAtLast(Data interface{}) {
-	newNode := &Node{
+	newSingleNode := &SingleNode{
 		Data: Data,
 		Next: nil,
 	}
 
 	if list.Head == nil {
-		list.Head = newNode
-		list.Tail = newNode
+		list.Head = newSingleNode
+		list.Tail = newSingleNode
 	} else {
-		list.Tail.Next = newNode
-		list.Tail = newNode
+		list.Tail.Next = newSingleNode
+		list.Tail = newSingleNode
 	}
 
 	list.size++
@@ -35,14 +35,14 @@ func (list *SinglyLinkedList) Size() int64 {
 }
 
 func (list *SinglyLinkedList) InsertAtStart(Data interface{}) {
-	newNode := &Node{
+	newSingleNode := &SingleNode{
 		Data: Data,
 		Next: list.Head,
 	}
 
-	list.Head = newNode
+	list.Head = newSingleNode
 	if list.Tail == nil {
-		list.Tail = newNode
+		list.Tail = newSingleNode
 	}
 
 	list.size++
@@ -74,6 +74,7 @@ func (list *SinglyLinkedList) DeleteElement(Data interface{}) {
 		}
 		current = current.Next
 	}
+	fmt.Print("element not found , not deleting")
 }
 
 func (list *SinglyLinkedList) Print() {
@@ -82,4 +83,24 @@ func (list *SinglyLinkedList) Print() {
 		fmt.Println(current.Data)
 		current = current.Next
 	}
+}
+
+func (list *SinglyLinkedList) InsertAfter(nodeElement interface{}, data interface{}) {
+	current := list.Head
+	node := &SingleNode{
+		Data: data,
+	}
+	for current != nil {
+		if current.Data == nodeElement {
+			node.Next = current.Next
+			current.Next = node
+			if node.Next == nil {
+				list.Tail = node
+			}
+			list.size++
+			return
+		}
+		current = current.Next
+	}
+	fmt.Print("element not found , not inserting")
 }
